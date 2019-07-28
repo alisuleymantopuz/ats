@@ -3,4 +3,6 @@
 node_modules
 data
 coverage
+.vscode
+
 npm-debug.log

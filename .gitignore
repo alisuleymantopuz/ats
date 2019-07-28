@@ -3,6 +3,7 @@
 /node_modules
 /data
 /coverage
+/.vscode
 
 # Logs
 logs
