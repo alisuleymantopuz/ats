@@ -1,9 +1,10 @@
-import { Controller, Get, Param, Post, Body, Query, Delete, HttpStatus, Put } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Query, Delete, HttpStatus, Put, UsePipes } from '@nestjs/common';
 import { AssetsService } from './assets.service';
 import { AssetTypeInfo } from "./dto/assetTypeInfo";
 import { CreateAssetType } from "./dto/createAssetType";
 import { DeleteAssetType } from "./dto/deleteAssetType";
 import { UpdateAssetType } from "./dto/updateAssetType";
+import { ClassTransformerValidationPipe } from '../common/validation/validation.pipe';
 
 @Controller('assets')
 export class AssetsController {
@@ -15,13 +16,14 @@ export class AssetsController {
         return assets;
     }
 
-    @Get()
-    public async GetById(id:String): Promise<AssetTypeInfo> {
+    @Get(':id')
+    public async GetById(@Param('id') id:String): Promise<AssetTypeInfo> {
         var asset = await this.assetsService.GetById(id);
         return asset;
     }
 
     @Post()
+    @UsePipes(ClassTransformerValidationPipe)
     public async Create(@Body() createAssetType: CreateAssetType): Promise<AssetTypeInfo> {
         var assets = await this.assetsService.Create(createAssetType);
         return assets;
