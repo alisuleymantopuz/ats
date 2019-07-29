@@ -6,13 +6,27 @@ services:
     build: .
     ports:
       - 3000:3000
+    depends_on:
+      - mongodb
     links:
       - mongodb
+    networks:
+    - dev
   mongodb:
-    container_name: dev-mongodb
     image: mongo:latest
     hostname: mongodb
-    volumes:
-      - ./data:/data/db
     ports:
       - 27017:27017
+    volumes:
+      - db-data:/data/db
+      - mongo-config:/data/configdb
+    networks:
+    - dev
+volumes:
+  db-data:
+    driver: local
+  mongo-config:
+    driver: local
+networks:
+  dev:
+    driver: bridge
