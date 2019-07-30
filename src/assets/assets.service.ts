@@ -46,7 +46,8 @@ export class AssetsService implements AssetValidation {
         if (validationResult.error) {
             throw new HttpException(validationResult.error.details.map(d => d.message), HttpStatus.BAD_REQUEST);
         }
-        this.assetModel.findOneAndDelete({ _id: deleteAssetType.id });
+
+        this.assetModel.deleteOne({_id:deleteAssetType.id}).exec();
     }
 
     public async FindAll(): Promise<AssetTypeInfo[]> {
@@ -57,7 +58,7 @@ export class AssetsService implements AssetValidation {
     }
 
 
-    public async GetById(id:String): Promise<AssetTypeInfo> {
+    public async GetById(id: String): Promise<AssetTypeInfo> {
 
         var result = await this.assetModel.findById(id).exec();
         var dto = AssetConverters.toAssetTypeInfo(result)

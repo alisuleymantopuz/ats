@@ -88,9 +88,11 @@ describe('AssetsService', () => {
   describe('delete', () => {
     it('should delete asset type by id', async () => {
       const _deleteRequestModel: DeleteAssetType = { id: '507f191e810c19729de860ea' };
-      jest.spyOn(AssetTestModel, 'findOneAndDelete').mockImplementation();
-      await service.Delete(_deleteRequestModel)
-      expect(AssetTestModel.findOneAndDelete).toHaveBeenCalledWith({ _id: _deleteRequestModel.id })
+      mockingoose(AssetTestModel).toReturn([{ id: '507f191e810c19729de860ea', name: 'Movie', types: ['Music', 'Video'] }]);
+      mockingoose(AssetTestModel).toReturn([{ id: '507f191e810c19729de860ea', name: 'Movie', types: ['Music', 'Video'] }], 'deleteOne');
+      jest.spyOn(AssetTestModel,'deleteOne');
+      await service.Delete(_deleteRequestModel);
+      expect(AssetTestModel.deleteOne).toHaveBeenCalledWith({ _id: _deleteRequestModel.id });
     });
   });
 
